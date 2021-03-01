@@ -1,8 +1,46 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Accueil";
+    List<Message> messages = ViewBag.messages;
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container">
+
+    @if (User.Identity.IsAuthenticated != false)
+    {
+        <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#nouveau_message">Nouveau message</button>
+    }
+
+    @foreach (var message in messages)
+    {
+        <div class="card border-secondary mb-3" style="max-width: 18rem;">
+            <div class="card-header"><a href="@Url.Action("Index", "User", new { username = message.user.Split("@")[0] })">@message.user.Split("@")[0]</a></div>
+            <div class="card-body text-secondary">
+                <p class="card-text">@message.message</p>
+            </div>
+            <div class="card-footer">
+                <small class="text-muted">Posté le @message.date_envoi</small>
+            </div>
+        </div>
+    }
+
+
+    <div class="modal fade" tabindex="-1" id="nouveau_message">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Nouveau message</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="message/create_message" method="post">
+                        <textarea class="form-control" aria-describedby="message_help" id="message" name="contenu_message"></textarea>
+                        <div id="message_help" class="form-text mb-3">Votre message sera publique</div>
+
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Fermer</button>
+                        <button type="submit" class="btn btn-primary">Envoyer</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

@@ -1,0 +1,29 @@
+﻿@{
+    string username = ViewBag.username;
+    List<Message> messages = ViewBag.messages;
+
+    ViewData["Title"] = username;
+}
+
+<div class="container">
+
+    <p>Messages de l'utilisateur @username</p>
+
+    @if(messages.Count == 0)
+    {
+        <p>Cette utilisateur n'a posté aucun message.</p>
+    }
+
+    @foreach (var message in messages)
+    {
+        <div class="card border-secondary mb-3" style="max-width: 18rem;">
+            <div class="card-header">@message.user.Split("@")[0]</div>
+            <div class="card-body text-secondary">
+                <p class="card-text">@message.message</p>
+            </div>
+            <div class="card-footer">
+                <small class="text-muted">Posté le @message.date_envoi</small>
+            </div>
+        </div>
+    }
+</div>

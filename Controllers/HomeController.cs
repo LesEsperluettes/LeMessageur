@@ -1,4 +1,5 @@
-﻿using Le_Messageur.Models;
+﻿using Le_Messageur.Data;
+using Le_Messageur.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -12,19 +13,19 @@ namespace Le_Messageur.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ApplicationDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()
         {
-            return View();
-        }
+            var messages = _context.Messages.OrderByDescending(m=>m.date_envoi).ToList();
 
-        public IActionResult Privacy()
-        {
+            ViewBag.messages = messages;
             return View();
         }
 
