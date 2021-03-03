@@ -20,7 +20,6 @@ namespace Le_Messageur.Controllers
             _context = context;
         }
 
-        // GET: MessageController/Create
         [HttpPost]
         [Route("message/create_message")]
         public ActionResult Create(string contenu_message)
@@ -40,5 +39,33 @@ namespace Le_Messageur.Controllers
 
             return RedirectToAction("Index", "Home");
         }
+
+        [HttpPost]
+        [Route("message/delete_message")]
+        public ActionResult Delete(Int64 messageId)
+        {
+            if (User.Identity.IsAuthenticated == false)
+            {
+                return Unauthorized();
+            }
+
+            var message = _context.Messages.Where(m => m.MessageID == messageId).FirstOrDefault();
+
+            if(message == null)
+            {
+                return NotFound();
+            }else if (!message.user.Equals(User.Identity.Name))
+            {
+                return Unauthorized();
+            }
+            else
+            {
+                _context.Messages.Remove(message);
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
+
     }
 }

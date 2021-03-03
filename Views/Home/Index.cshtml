@@ -19,6 +19,13 @@
             </div>
             <div class="card-footer">
                 <small class="text-muted">Posté le @message.date_envoi</small>
+                @if (message.user.Equals(User.Identity.Name))
+                {
+            <form action="/message/delete_message" method="post">
+                <input name="messageId" type="hidden" value="@message.MessageID">
+                <button type="submit" class="btn btn-danger">Supprimer</button>
+            </form>
+                }
             </div>
         </div>
     }
