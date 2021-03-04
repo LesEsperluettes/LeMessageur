@@ -13,8 +13,8 @@ namespace Le_Messageur.Data.Migrations
                 {
                     MessageID = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    message = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    user = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    message = table.Column<string>(type: "text", nullable: true),
+                    user = table.Column<string>(type: "text", nullable: true),
                     date_envoi = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
